@@ -1,23 +1,40 @@
 package com.emrys.androidlab
 
+import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var tickCross: ImageView
+    private lateinit var tickToCross: AnimatedVectorDrawable
+    private lateinit var crossToTick: AnimatedVectorDrawable
+    private var tick = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
+        tickCross = findViewById<View>(R.id.tick_cross) as ImageView
+        tickToCross = getDrawable(R.drawable.avd_tick_to_cross) as AnimatedVectorDrawable
+        crossToTick = getDrawable(R.drawable.avd_cross_to_tick) as AnimatedVectorDrawable
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+            animate(tickCross)
         }
+    }
+
+    fun animate(view: View?) {
+        val drawable: AnimatedVectorDrawable = if (tick) tickToCross else crossToTick
+        tickCross.setImageDrawable(drawable)
+        drawable.start()
+        tick = !tick
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
